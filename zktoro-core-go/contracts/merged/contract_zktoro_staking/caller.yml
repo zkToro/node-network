@@ -1,0 +1,19 @@
+sources:
+  - type: ZktoroStakingCaller
+    tag: '0.1.1'
+    package:
+      importPath: zktoro/zktoro-core-go/contracts/generated/contract_zktoro_staking_0_1_1
+      alias: zktorostaking011
+      sourceDir: ../../generated/contract_zktoro_staking_0_1_1
+  - type: ZktoroStakingCaller
+    tag: '0.1.2'
+    package:
+      importPath: zktoro/zktoro-core-go/contracts/generated/contract_zktoro_staking_0_1_2
+      alias: zktorostaking012
+      sourceDir: ../../generated/contract_zktoro_staking_0_1_2
+
+output:
+  type: ZktoroStakingCaller
+  defaultTag: '0.1.2'
+  package: contract_zktoro_staking
+  file: caller.go

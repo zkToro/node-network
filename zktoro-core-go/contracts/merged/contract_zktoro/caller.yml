@@ -1,0 +1,13 @@
+sources:
+  - type: ZktoroCaller
+    tag: '0.2.0'
+    package:
+      importPath: zktoro/zktoro-core-go/contracts/generated/contract_zktoro_0_2_0
+      alias: zktoro020
+      sourceDir: ../../generated/contract_zktoro_0_2_0
+
+output:
+  type: ZktoroCaller
+  defaultTag: '0.2.0'
+  package: contract_zktoro
+  file: caller.go

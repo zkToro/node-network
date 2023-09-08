@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package network.zktoro;
+
+import public "agent.proto";
+
+option go_package = "./;protocol";
+
+service PublisherNode {
+  rpc Notify (NotifyRequest) returns (NotifyResponse) {}
+}
+
+message NotifyRequest {
+  SignedAlert signedAlert = 1;
+  EvaluateTxRequest evalTxRequest = 2;
+  EvaluateTxResponse evalTxResponse = 3;
+  EvaluateBlockRequest evalBlockRequest = 4;
+  EvaluateBlockResponse evalBlockResponse = 5;
+  AgentInfo agentInfo = 6;
+  TrackingTimestamps timestamps = 7;
+  EvaluateAlertRequest evalAlertRequest = 8;
+  EvaluateAlertResponse evalAlertResponse = 9;
+}
+
+message NotifyResponse {}

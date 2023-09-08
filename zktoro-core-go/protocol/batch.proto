@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package network.zktoro;
+
+import public "publisher.proto";
+import public "agent.proto";
+import public "bot_metrics.proto";
+import public "alert.proto";
+import public "storage.proto";
+
+option go_package = "./;protocol";
+
+//a scanner encodes this into a SignedPayload of type BATCH_SUMMARY
+message BatchSummary {
+  string batch = 1;
+  uint64 chainId = 2;
+  uint64 blockStart = 3;
+  uint64 blockEnd = 4;
+  uint32 alertCount = 5;
+  ScannerVersion scannerVersion = 6;
+  string previousReceipt = 7;
+  uint64 latestBlockInput = 8;
+  string timestamp = 9;
+  InspectionResults inspectionResults = 13;
+  Provider provider = 14;
+}
+
+//an analyzer endpoint encodes this into a SignedPayload of type BATCH_RECEIPT
+message BatchReceipt {
+  SignedPayload batchSummary = 1;
+  string timestamp = 2;
+}
+
+message SignedPayload {
+  // defaults to batch because previous batch schema didn't have the type property
+  enum PayloadType {
+    BATCH = 0;
+    BATCH_SUMMARY = 1;
+    BATCH_RECEIPT = 2;
+  }
+  PayloadType type = 1;
+  Signature signature = 2;
+  string encoded = 3;
+}
+
+//a scanner encodes this into a SignedPayload of type BATCH
+message AlertBatch {
+  uint64 chainId = 1;
+  uint64 blockStart = 2;
+  uint64 blockEnd = 3;
+  uint32 alertCount = 4;
+  Finding.Severity maxSeverity = 5;
+  repeated BlockResults results = 6;
+  repeated BatchAgent agents = 7;
+  repeated AgentMetrics metrics = 8;
+  ScannerVersion scannerVersion = 9;
+  string parent = 10;
+  repeated AgentAlerts privateAlerts = 11;
+  uint64 latestBlockInput = 12;
+  InspectionResults inspectionResults = 13;
+  repeated CombinationAlertResults combinationAlerts = 14;
+  Provider provider = 15;
+}
+
+message BlockResults {
+  Block block = 1;
+  repeated AgentAlerts results = 2;
+  repeated TransactionResults transactions = 3;
+}
+
+message TransactionResults {
+  TransactionEvent transaction = 1;
+  repeated AgentAlerts results = 2;
+}
+
+message CombinationAlertResults {
+  AlertEvent alertEvent = 1;
+  repeated AgentAlerts results = 2;
+}
+
+message AgentAlerts {
+  string agentManifest = 1;
+  repeated SignedAlert alerts = 2;
+}
+
+message Block {
+  string blockHash = 1;
+  uint64 blockNumber = 2;
+  string blockTimestamp = 3;
+}
+
+message BatchAgent {
+  AgentInfo info = 1;
+  repeated uint64 blocks = 2;
+  repeated string transactions = 3;
+  repeated string combinations = 4;
+}
+
+message ScannerVersion {
+  string commit = 1;
+  string ipfs = 2;
+  string version = 3;
+  bool autoUpdates = 4;
+}
+
+message InspectionResults {
+  InspectionInputs inputs = 1;
+  map<string, string> metadata = 2;
+  map<string, double> indicators = 3;
+}
+
+message InspectionInputs {
+  uint64 blockNumber = 1;
+  string scanApiHost = 2;
+  string proxyApiHost = 3;
+  string traceApiHost = 4;
+  bool checkTrace = 5;
+  string registryApiHost = 6;
+  string ensContractAddress = 7;
+  string scannerAddress = 8;
+}
