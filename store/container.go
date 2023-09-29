@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"zktoro/zktoro-core-go/release"
+
 	"github.com/goccy/go-json"
 	log "github.com/sirupsen/logrus"
 
@@ -16,8 +17,8 @@ import (
 
 const defaultImageCheckInterval = time.Second * 5
 
-// zktoroImageStore keeps track of the latest zktoro node image.
-type ZktoroImageStore interface {
+// ZktoroImageStore keeps track of the latest zktoro node image.
+type zktoroImageStore interface {
 	Latest() <-chan ImageRefs
 	EmbeddedImageRefs() ImageRefs
 }
@@ -29,15 +30,15 @@ type ImageRefs struct {
 	ReleaseInfo *release.ReleaseInfo
 }
 
-type zktoroImageStore struct {
+type ZktoroImageStore struct {
 	updaterPort string
 	latestCh    chan ImageRefs
 	latestImgs  ImageRefs
 }
 
-// NewzktoroImageStore creates a new store.
-func NewzktoroImageStore(ctx context.Context, updaterPort string, autoUpdate bool) (*zktoroImageStore, error) {
-	store := &zktoroImageStore{
+// NewZktoroImageStore creates a new store.
+func NewZktoroImageStore(ctx context.Context, updaterPort string, autoUpdate bool) (*ZktoroImageStore, error) {
+	store := &ZktoroImageStore{
 		updaterPort: updaterPort,
 		latestCh:    make(chan ImageRefs),
 	}
@@ -47,7 +48,7 @@ func NewzktoroImageStore(ctx context.Context, updaterPort string, autoUpdate boo
 	return store, nil
 }
 
-func (store *zktoroImageStore) loop(ctx context.Context) {
+func (store *ZktoroImageStore) loop(ctx context.Context) {
 	store.check(ctx)
 	ticker := time.NewTicker(defaultImageCheckInterval)
 	for {
@@ -60,7 +61,7 @@ func (store *zktoroImageStore) loop(ctx context.Context) {
 	}
 }
 
-func (store *zktoroImageStore) EmbeddedImageRefs() ImageRefs {
+func (store *ZktoroImageStore) EmbeddedImageRefs() ImageRefs {
 	return ImageRefs{
 		Supervisor:  config.DockerSupervisorImage,
 		Updater:     config.DockerUpdaterImage,
@@ -68,7 +69,7 @@ func (store *zktoroImageStore) EmbeddedImageRefs() ImageRefs {
 	}
 }
 
-func (store *zktoroImageStore) check(ctx context.Context) {
+func (store *ZktoroImageStore) check(ctx context.Context) {
 	latestReleaseInfo, err := store.getFromUpdater(ctx)
 	if err != nil {
 		log.WithError(err).Warn("failed to get the latest release from the updater")
@@ -91,7 +92,7 @@ func (store *zktoroImageStore) check(ctx context.Context) {
 	}
 }
 
-func (store *zktoroImageStore) getFromUpdater(ctx context.Context) (*release.ReleaseInfo, error) {
+func (store *ZktoroImageStore) getFromUpdater(ctx context.Context) (*release.ReleaseInfo, error) {
 	resp, err := http.Get(fmt.Sprintf("http://localhost:%s", store.updaterPort))
 	if err != nil {
 		return nil, err
@@ -111,6 +112,6 @@ func (store *zktoroImageStore) getFromUpdater(ctx context.Context) (*release.Rel
 }
 
 // Latest returns a channel that provides the latest image reference.
-func (store *zktoroImageStore) Latest() <-chan ImageRefs {
+func (store *ZktoroImageStore) Latest() <-chan ImageRefs {
 	return store.latestCh
 }

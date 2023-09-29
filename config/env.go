@@ -2,8 +2,8 @@ package config
 
 const (
 	EnvHostzktoroDir = "HOST_zktoro_DIR" // for retrieving zktoro dir path on the host os
-	EnvDevelopment  = "zktoro_DEVELOPMENT"
-	EnvReleaseInfo  = "zktoro_RELEASE_INFO"
+	EnvDevelopment   = "zktoro_DEVELOPMENT"
+	EnvReleaseInfo   = "zktoro_RELEASE_INFO"
 
 	// Agent env vars
 	EnvJsonRpcHost        = "JSON_RPC_HOST"
@@ -13,9 +13,11 @@ const (
 	EnvPublicAPIProxyHost = "zktoro_PUBLIC_API_PROXY_HOST"
 	EnvPublicAPIProxyPort = "zktoro_PUBLIC_API_PROXY_PORT"
 	EnvAgentGrpcPort      = "AGENT_GRPC_PORT"
-	EnvzktoroBotID         = "zktoro_BOT_ID"
-	EnvzktoroBotOwner      = "zktoro_BOT_OWNER"
-	EnvzktoroChainID       = "zktoro_CHAIN_ID"
+	EnvzktoroBotID        = "zktoro_BOT_ID"
+	EnvzktoroBotOwner     = "zktoro_BOT_OWNER"
+	EnvzktoroChainID      = "zktoro_CHAIN_ID"
+
+	WithoutENS = true
 )
 
 // EnvDefaults contain default values for one env.

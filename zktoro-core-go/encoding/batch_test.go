@@ -3,10 +3,11 @@ package encoding_test
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto"
-	"github.com/stretchr/testify/assert"
 	"zktoro/zktoro-core-go/encoding"
 	"zktoro/zktoro-core-go/protocol"
+
+	"github.com/stretchr/testify/assert"
+	"google.golang.org/protobuf/proto"
 )
 
 var testMap = map[string]string{

@@ -11,10 +11,10 @@ import (
 
 	types "github.com/docker/docker/api/types"
 	domain "zktoro/zktoro-core-go/domain"
-	docker "zktoro-node/clients/docker"
-	config "zktoro-node/config"
+	docker "zktoro/clients/docker"
+	config "zktoro/config"
 	gomock "github.com/golang/mock/gomock"
-	proto "github.com/golang/protobuf/proto"
+	proto "google.golang.org/protobuf/proto"
 )
 
 // MockDockerClient is a mock of DockerClient interface.

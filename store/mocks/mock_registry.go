@@ -7,7 +7,7 @@ package mock_store
 import (
 	reflect "reflect"
 
-	config "zktoro-node/config"
+	config "zktoro/config"
 	gomock "github.com/golang/mock/gomock"
 )
 

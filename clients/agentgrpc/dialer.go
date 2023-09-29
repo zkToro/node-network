@@ -1,7 +1,7 @@
 package agentgrpc
 
 import (
-	"zktoro-node/config"
+	"zktoro/config"
 )
 
 // BotDialer dials a bot.

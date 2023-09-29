@@ -7,13 +7,14 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-
 	"math/big"
 	"os"
-
+	"path/filepath"
 	"zktoro/go-multicall"
 	"zktoro/zktoro-core-go/contracts/generated/contract_dispatch_0_1_5"
 	"zktoro/zktoro-core-go/contracts/merged/contract_rewards_distributor"
+
+	log "github.com/sirupsen/logrus"
 
 	"zktoro/zktoro-core-go/contracts/merged/contract_agent_registry"
 	"zktoro/zktoro-core-go/contracts/merged/contract_dispatch"
@@ -31,6 +32,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
+	// "github.com/ethereum/go-ethereum/log"
+
 	"zktoro/zktoro-core-go/ens"
 	"zktoro/zktoro-core-go/ethereum"
 	"zktoro/zktoro-core-go/utils"
@@ -40,7 +43,7 @@ const (
 	defaultScannerRegistryChainID = uint64(31337)
 	scannerRegistryDeployBlock    = 20187154
 	defaultEnsAddress             = "0x08f42fcc52a9C2F391bF507C4E8688D0b53e1bd7"
-	AddressLocaitons              = "/Users/luchenghao/Documents/Workspace/blockchainProjects/zktoro/backend/hardhat_zktoro_admin/releases/deployments/31337.json"
+	AddressLocaitons              = "31337.json"
 )
 
 // Registry errors
@@ -262,7 +265,10 @@ func NewDefaultClient(ctx context.Context) (*client, error) {
 }
 
 func ReadContractAddresses() (map[string]interface{}, error) {
-	jsonFile, err := os.Open(AddressLocaitons)
+
+	absPath, _ := filepath.Abs(AddressLocaitons)
+	log.Info(absPath)
+	jsonFile, err := os.Open(absPath)
 	defer jsonFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
@@ -292,7 +298,8 @@ func NewClientWithoutENS(ctx context.Context, cfg ClientConfig) (*client, error)
 	regContracts.ZktoroStaking = findContractAddress(regContractsTmp, "zktoro-staking")
 	regContracts.StakeAllocator = findContractAddress(regContractsTmp, "stake-allocator")
 	regContracts.Rewards = findContractAddress(regContractsTmp, "rewards-distributor")
-
+	regContracts.ScannerNodeVersion = findContractAddress(regContractsTmp, "scanner-node-version")
+	// log.Info(regContracts.ScannerNodeVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -377,15 +384,15 @@ func NewClientWithoutENS(ctx context.Context, cfg ClientConfig) (*client, error)
 		return nil, err
 	}
 
-	// cl.contracts.ScannerVersion, err = contract_scanner_node_version.NewScannerNodeVersionCaller(regContracts.ScannerNodeVersion, ec)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// cl.contracts.ScannerVersionFil, err = contract_scanner_node_version.NewScannerNodeVersionFilterer(regContracts.ScannerNodeVersion, ec)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// cl.versionManager.SetUpdateRule("ScannerNodeVersion", cl.contracts.ScannerVersion, cl.contracts.ScannerVersion, cl.contracts.ScannerVersionFil)
+	cl.contracts.ScannerVersion, err = contract_scanner_node_version.NewScannerNodeVersionCaller(regContracts.ScannerNodeVersion, ec)
+	if err != nil {
+		return nil, err
+	}
+	cl.contracts.ScannerVersionFil, err = contract_scanner_node_version.NewScannerNodeVersionFilterer(regContracts.ScannerNodeVersion, ec)
+	if err != nil {
+		return nil, err
+	}
+	cl.versionManager.SetUpdateRule("ScannerNodeVersion", cl.contracts.ScannerVersion, cl.contracts.ScannerVersion, cl.contracts.ScannerVersionFil)
 
 	cl.contracts.ZktoroStaking, err = contract_zktoro_staking.NewZktoroStakingCaller(regContracts.ZktoroStaking, ec)
 	if err != nil {

@@ -1,9 +1,9 @@
 package messaging
 
 import (
+	"zktoro/config"
 	"zktoro/zktoro-core-go/domain"
 	"zktoro/zktoro-core-go/protocol"
-	"zktoro-node/config"
 )
 
 // Message types

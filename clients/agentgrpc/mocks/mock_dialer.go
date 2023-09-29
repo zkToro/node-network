@@ -7,8 +7,8 @@ package mock_agentgrpc
 import (
 	reflect "reflect"
 
-	agentgrpc "zktoro-node/clients/agentgrpc"
-	config "zktoro-node/config"
+	agentgrpc "zktoro/clients/agentgrpc"
+	config "zktoro/config"
 	gomock "github.com/golang/mock/gomock"
 )
 

@@ -28,7 +28,13 @@ const (
 )
 
 var (
-	cfg       config.Config
+	cfg config.Config
+
+	parsedArgs struct {
+		Version uint64
+		NoCheck bool
+	}
+
 	cmdZktoro = &cobra.Command{
 		Use:   "zktoro",
 		Short: "Zktoro node command line interface",
@@ -45,6 +51,12 @@ var (
 		RunE:  handlezktoroInit,
 	}
 
+	cmdZktoroSignVp = &cobra.Command{
+		Use:   "signvp",
+		Short: "sign a verified presentation based on verified credential and private key",
+		RunE:  handleZktoroSignVp,
+	}
+
 	cmdzktoroAuthorize = &cobra.Command{
 		Use:   "authorize",
 		Short: "generate a signature for a specific action",
@@ -52,7 +64,11 @@ var (
 			return cmd.Help()
 		},
 	}
-
+	cmdzktoroRun = &cobra.Command{
+		Use:   "run",
+		Short: "launch the node",
+		RunE:  withInitialized(withValidConfig(handlezktoroRun)),
+	}
 	cmdzktoroAuthorizePool = &cobra.Command{
 		Use:   "pool",
 		Short: "generate a pool registration signature",
@@ -67,7 +83,7 @@ func Execute() error {
 func init() {
 	cobra.OnInitialize(initConfig)
 	cmdZktoro.AddCommand(cmdZktoroInit)
-
+	cmdZktoro.AddCommand(cmdZktoroSignVp)
 	cmdZktoro.PersistentFlags().String("passphrase", "", "passphrase to decrypt the private key (overrides $zktoro_PASSPHRASE)")
 	viper.BindPFlag(keyZktoroPassphrase, cmdZktoro.PersistentFlags().Lookup("passphrase"))
 
@@ -80,6 +96,8 @@ func init() {
 	cmdzktoroAuthorizePool.Flags().Bool("polygonscan", false, "see the registerScannerNode() inputs to use in Polygonscan")
 	cmdzktoroAuthorizePool.Flags().BoolP("force", "f", false, "ignore warning(s)")
 	cmdzktoroAuthorizePool.Flags().Bool("clean", false, "output only the encoded registration info")
+
+	cmdZktoro.AddCommand(cmdzktoroRun)
 }
 
 func initConfig() {

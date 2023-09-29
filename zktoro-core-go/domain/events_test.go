@@ -4,9 +4,10 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/golang/protobuf/jsonpb"
-	"github.com/stretchr/testify/assert"
 	"zktoro/zktoro-core-go/protocol"
+
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/stretchr/testify/assert"
 )
 
 func intPtr(val int) *int {

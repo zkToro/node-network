@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"net"
 
+	"zktoro/config"
 	"zktoro/zktoro-core-go/protocol"
-	"zktoro-node/config"
+
 	"google.golang.org/grpc"
 )
 

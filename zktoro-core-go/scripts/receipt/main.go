@@ -7,12 +7,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/golang/protobuf/jsonpb"
-	log "github.com/sirupsen/logrus"
 	"zktoro/zktoro-core-go/encoding"
 	"zktoro/zktoro-core-go/ipfs"
 	"zktoro/zktoro-core-go/protocol"
 	"zktoro/zktoro-core-go/security"
+
+	"github.com/gogo/protobuf/jsonpb"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {

@@ -6,8 +6,9 @@ import (
 	"io"
 	"time"
 
+	"zktoro/config"
 	"zktoro/zktoro-core-go/protocol"
-	"zktoro-node/config"
+
 	"github.com/hashicorp/go-multierror"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

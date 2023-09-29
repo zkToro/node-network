@@ -6,14 +6,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+	"zktoro/config"
 	"zktoro/zktoro-core-go/manifest"
 	mock_manifest "zktoro/zktoro-core-go/manifest/mocks"
 	"zktoro/zktoro-core-go/registry"
 	mock_registry "zktoro/zktoro-core-go/registry/mocks"
-	"zktoro-node/config"
+
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var (

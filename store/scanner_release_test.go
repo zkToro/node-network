@@ -4,8 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"zktoro/config"
 	"zktoro/zktoro-core-go/release"
-	"zktoro-node/config"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

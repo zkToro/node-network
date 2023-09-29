@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	store "zktoro-node/store"
+	store "zktoro/store"
 	gomock "github.com/golang/mock/gomock"
 )
 

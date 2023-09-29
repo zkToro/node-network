@@ -14,14 +14,15 @@ import (
 
 	"github.com/goccy/go-json"
 
+	"zktoro/clients/cooldown"
+	"zktoro/config"
+	"zktoro/zktoro-core-go/utils/workers"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
-	"zktoro/zktoro-core-go/utils/workers"
-	"zktoro-node/clients/cooldown"
-	"zktoro-node/config"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -601,7 +602,8 @@ func (d *dockerClient) TerminateContainer(ctx context.Context, id string) error 
 
 // ShutdownContainer stops a container by sending a termination signal and waits until either container exits or context cancels.
 func (d *dockerClient) ShutdownContainer(ctx context.Context, id string, timeout *time.Duration) error {
-	return d.cli.ContainerStop(ctx, id, timeout)
+	timeoutSeconds := int(timeout.Seconds())
+	return d.cli.ContainerStop(ctx, id, container.StopOptions{Timeout: &timeoutSeconds})
 }
 
 // TerminateContainer stops a container by sending an termination signal.

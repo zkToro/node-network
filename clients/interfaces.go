@@ -7,10 +7,10 @@ import (
 	"zktoro/zktoro-core-go/domain"
 
 	"github.com/docker/docker/api/types"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 
-	"zktoro-node/clients/docker"
-	"zktoro-node/config"
+	"zktoro/clients/docker"
+	"zktoro/config"
 )
 
 // DockerClient is a client interface for interacting with docker

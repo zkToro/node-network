@@ -9,8 +9,8 @@ const ContainerNamePrefix = "zktoro"
 
 // Docker container names
 var (
-	DockerSupervisorImage = "zktoro-network/zktoro-node:latest"
-	DockerUpdaterImage    = "zktoro-network/zktoro-node:latest"
+	DockerSupervisorImage = "zktoro:latest"
+	DockerUpdaterImage    = "zktoro" // removed latest
 	UseDockerImages       = "local"
 
 	DockerSupervisorManagedContainers = 6
@@ -27,7 +27,7 @@ var (
 
 	DockerNetworkName = DockerScannerContainerName
 
-	DefaultContainerzktoroDirPath      = "/.zktoro"
+	DefaultContainerzktoroDirPath     = "/.zktoro"
 	DefaultContainerConfigPath        = path.Join(DefaultContainerzktoroDirPath, DefaultConfigFileName)
 	DefaultContainerWrappedConfigPath = path.Join(DefaultContainerzktoroDirPath, DefaultWrappedConfigFileName)
 	DefaultContainerKeyDirPath        = path.Join(DefaultContainerzktoroDirPath, DefaultKeysDirName)

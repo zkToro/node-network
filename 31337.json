@@ -1,0 +1,54 @@
+{
+	"forwarder-deploy-tx": "0xb7ae2f43356b995c025f3a715e91768d78d0bff2daeb6c7bd80cacdc61c6a2aa",
+	"forwarder": {
+		"address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+	},
+	"zktoro-deploy-tx": "0x76fb66bf6315fefa5e44ff1289c3ac028f85dacd93c394cccd3a6869803c7ff0",
+	"zktoro": {
+		"address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+	},
+	"access-manager-deploy-tx": "0xc1f4029a4e7bf6cff019a1f7cf2bb256dda84338a671d3a40b39d45b302f1f65",
+	"access-manager": {
+		"address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
+	},
+	"zktoro-staking-deploy-tx": "0xe660e5efd20c7073101af4acabf967b2ae9aa2aadf6cd400bef41e90d87c46e5",
+	"zktoro-staking": {
+		"address": "0x0165878A594ca255338adfa4d48449f69242Eb8F"
+	},
+	"stake-subject-gateway-deploy-tx": "0xe9e90035458eb105b39bc5eaa593ff9de08d8b6362ca45917ec4101822830f21",
+	"stake-subject-gateway": {
+		"address": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318"
+	},
+	"rewards-distributor-deploy-tx": "0x16456e5a5eda8b58e8429cca35da8e6af14772067a8e9e51e9b97ce1bff7f9cb",
+	"rewards-distributor": {
+		"address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
+	},
+	"stake-allocator-deploy-tx": "0x07b73fabe10d10b349f036de1322802bd4d7497b21bc16c11e5bbcefe9dde70d",
+	"stake-allocator": {
+		"address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
+	},
+	"agent-registry-deploy-tx": "0x0583329fd71ac61c86a82bb4354c5369cd4fba5fd115a589cef436f9ab1294d1",
+	"agent-registry": {
+		"address": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1"
+	},
+	"scanner-registry-deploy-tx": "0x0d62c44b4a503be2a4a344f3f4906ac375b2def4758d29d68e2b250c0d842ea7",
+	"scanner-registry": {
+		"address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c"
+	},
+	"scanner-node-version-deploy-tx": "0x65985236cdbef5678aa5de046d2480555276fd98236bc064c6ee81ad4e0556db",
+	"scanner-node-version": {
+		"address": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1"
+	},
+	"slashing-controller-deploy-tx": "0xb6b6693c9883836de869c92a780ebbf2a641b5a47c6d02eac6dacd5559ba9eb9",
+	"slashing-controller": {
+		"address": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
+	},
+	"scanner-pool-registry-deploy-tx": "0x5750430b4fc4d0cc9543f0659ef294f9c04b891bc961296465760bd144148c9b",
+	"scanner-pool-registry": {
+		"address": "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F"
+	},
+	"dispatch-deploy-tx": "0xcd0975d8d046863947ae02019fea3dad593052af26dc397b4b164fb2ece5a13f",
+	"dispatch": {
+		"address": "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB"
+	}
+}

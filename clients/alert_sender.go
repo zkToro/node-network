@@ -2,12 +2,13 @@ package clients
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"zktoro/config"
+	"zktoro/store"
 	"zktoro/zktoro-core-go/domain"
 	"zktoro/zktoro-core-go/protocol"
 	"zktoro/zktoro-core-go/security"
-	"zktoro-node/config"
-	"zktoro-node/store"
+
+	"github.com/ethereum/go-ethereum/accounts/keystore"
 	log "github.com/sirupsen/logrus"
 )
 

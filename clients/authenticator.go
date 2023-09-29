@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"sync"
 
-	"zktoro-node/clients/docker"
-	"zktoro-node/clients/messaging"
-	"zktoro-node/config"
+	"zktoro/clients/docker"
+	"zktoro/clients/messaging"
+	"zktoro/config"
 )
 
 // IPAuthenticator makes sure ip is an assigned bot or a managed container

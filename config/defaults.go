@@ -13,5 +13,5 @@ const (
 	DefaultStoragePort           = "8525"
 	DefaultPublicAPIProxyPort    = "8535"
 	DefaultJSONRPCProxyPort      = "8545"
-	DefaultzktoroNodeBinaryPath   = "/zktoro-node" // the path for the common binary in the container image
+	DefaultzktoroNodeBinaryPath  = "/zktoro" // the path for the common binary in the container image
 )

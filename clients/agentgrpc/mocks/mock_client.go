@@ -9,8 +9,8 @@ import (
 	reflect "reflect"
 
 	protocol "zktoro/zktoro-core-go/protocol"
-	agentgrpc "zktoro-node/clients/agentgrpc"
-	config "zktoro-node/config"
+	agentgrpc "zktoro/clients/agentgrpc"
+	config "zktoro/config"
 	gomock "github.com/golang/mock/gomock"
 	grpc "google.golang.org/grpc"
 )

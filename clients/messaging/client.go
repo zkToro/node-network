@@ -5,10 +5,11 @@ import (
 	"time"
 
 	"zktoro/zktoro-core-go/protocol"
+
 	"github.com/goccy/go-json"
-	"github.com/golang/protobuf/proto"
 	"github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 )
 
 // Notification and client globals

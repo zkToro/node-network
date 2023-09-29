@@ -9,11 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang/protobuf/jsonpb"
 	"zktoro/zktoro-core-go/protocol"
 
-	"github.com/stretchr/testify/assert"
 	"zktoro/zktoro-core-go/testutils/testhttp"
+
+	"github.com/gogo/protobuf/jsonpb"
+	"github.com/stretchr/testify/assert"
 )
 
 type testObj struct {

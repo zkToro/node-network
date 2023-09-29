@@ -10,10 +10,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"zktoro/config"
 	"zktoro/zktoro-core-go/registry"
 	"zktoro/zktoro-core-go/release"
 	"zktoro/zktoro-core-go/utils"
-	"zktoro/config"
 )
 
 var ErrBlankReference = errors.New("reference is blank")
@@ -104,6 +104,41 @@ func (d *devScannerVersionStore) GetRelease(ctx context.Context) (*ScannerReleas
 		IsDevMode:       true,
 	}, nil
 }
+func NewScannerReleaseStoreWithoutENS(ctx context.Context, cfg config.Config) (ScannerReleaseStore, error) {
+	developmentMode := utils.ParseBoolEnvVar(config.EnvDevelopment)
+	if developmentMode {
+		return &devScannerVersionStore{}, nil
+	}
+
+	releaseClient, err := release.NewClient(cfg.Registry.IPFS.GatewayURL, []string{
+		cfg.Registry.ReleaseDistributionUrl,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	registryClient, err := GetRegistryClientWithoutENS(ctx, cfg, registry.ClientConfig{
+		JsonRpcUrl: cfg.Registry.JsonRpc.Url,
+		ENSAddress: cfg.ENSConfig.ContractAddress,
+		Name:       "updater",
+		NoRefresh:  true,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	lookup := registryClient.GetScannerNodeVersion
+	if cfg.AutoUpdate.TrackPrereleases {
+		lookup = registryClient.GetScannerNodePrereleaseVersion
+	}
+	return &lookupVersionStore{
+		rc:           releaseClient,
+		lookup:       lookup,
+		isPrerelease: cfg.AutoUpdate.TrackPrereleases,
+		mux:          sync.Mutex{},
+	}, nil
+}
+
 func NewScannerReleaseStore(ctx context.Context, cfg config.Config) (ScannerReleaseStore, error) {
 	developmentMode := utils.ParseBoolEnvVar(config.EnvDevelopment)
 	if developmentMode {
