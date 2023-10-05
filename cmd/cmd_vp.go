@@ -12,20 +12,16 @@ import (
 	"github.com/hyperledger/aries-framework-go/pkg/kms"
 	jsonld "github.com/piprate/json-gold/ld"
 	"github.com/spf13/cobra"
-	"github.com/xeipuuv/gojsonschema"
 )
 
-type Keys struct {
-	HOLDER_EDDSA_PRIVATE_KEY  string `json:"HOLDER_EDDSA_PRIVATE_KEY"`
-	HOLDER_ES256K_PRIVATE_KEY string `json:"HOLDER_ES256K_PRIVATE_KEY"`
-	HOLDER_EDDSA_PUBLIC_KEY   string `json:"HOLDER_EDDSA_PUBLIC_KEY"`
-	DID_ISSUER                string `json:"DID_ISSUER"`
-	ISSUER_PUBLIC_KEY         string `json:"ISSUER_PUBLIC_KEY"`
+type VC struct {
+	Issuer_Public_Key string `json:"issuer_public_key"`
+	Holder_DID        string `json:"holder_did"`
+	VC                string `json:"vc"`
 }
 
-func handleZktoroSignVp(cmd *cobra.Command, args []string) error {
-
-	dat, err := os.ReadFile("proofOfName.jwt")
+func signVP() error {
+	vcData, err := os.ReadFile(cfg.VcPath)
 
 	// claims := jwt.MapClaims{}
 	// token, err := jwt.ParseWithClaims(string(dat), claims, func(token *jwt.Token) (interface{}, error) {
@@ -35,28 +31,25 @@ func handleZktoroSignVp(cmd *cobra.Command, args []string) error {
 	// if token == nil {
 	// 	fmt.Println(err)
 	// }
-
-	keyData, err2 := os.ReadFile("key.json")
-	if err2 != nil {
-		fmt.Println(err2)
-		return err2
-	}
-	keys := Keys{}
-	err = json.Unmarshal([]byte(keyData), &keys)
+	var vcJson VC
+	err = json.Unmarshal(vcData, &vcJson)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
-	issuerPublicKey := keys.ISSUER_PUBLIC_KEY
-	builder := verifiable.NewCredentialSchemaLoaderBuilder()
+	issuerPublicKey := vcJson.Issuer_Public_Key
+	// builder := verifiable.NewCredentialSchemaLoaderBuilder()
 
-	factory := gojsonschema.DefaultJSONLoaderFactory{}
+	// factory := gojsonschema.DefaultJSONLoaderFactory{}
 
-	builder.SetJSONLoader(factory.New("proofOfName.json"))
+	// builder.SetJSONLoader(factory.New("proofOfName.json"))
 
 	documentLoader := jsonld.NewDefaultDocumentLoader(http.DefaultClient)
-
-	vc, err3 := verifiable.ParseCredential(dat,
+	fmt.Println("VC:")
+	fmt.Println(vcJson.VC)
+	fmt.Println("issuer pk: ", vcJson.Issuer_Public_Key)
+	fmt.Println("holder did: ", vcJson.Holder_DID)
+	vc, err3 := verifiable.ParseCredential([]byte(vcJson.VC),
 
 		verifiable.WithPublicKeyFetcher(verifiable.SingleKey([]byte(issuerPublicKey), kms.ED25519)),
 		verifiable.WithJSONLDDocumentLoader(documentLoader),
@@ -68,17 +61,27 @@ func handleZktoroSignVp(cmd *cobra.Command, args []string) error {
 		return err3
 	}
 	vp, err := verifiable.NewPresentation(verifiable.WithCredentials(vc))
+
 	if err != nil {
 		panic(fmt.Errorf("failed to build VP from VC: %w", err))
 	}
-	vp.Holder = keys.DID_ISSUER
 
+	vp.Holder = vcJson.Holder_DID
 	jwtClaims, err := vp.JWTClaims(nil, true)
 	if err != nil {
 		panic(fmt.Errorf("failed to create JWT claims of VP: %w", err))
 	}
-	privateKey, _ := hex.DecodeString(keys.HOLDER_EDDSA_PRIVATE_KEY)
-	publicKey, _ := hex.DecodeString(keys.HOLDER_EDDSA_PUBLIC_KEY)
+
+	prvKeyBytes, err := os.ReadFile(cfg.DIDKeyPath)
+	if err != nil {
+		panic(fmt.Errorf("failed to read node private key: %w", err))
+	}
+	privateKey := prvKeyBytes
+	// fmt.Println("Private Key: ")
+	// fmt.Println(hex.EncodeToString(prvKeyBytes))
+	// fmt.Println("Public Key: ")
+	// fmt.Println(hex.EncodeToString(prvKeyBytes)[64:])
+	publicKey, _ := hex.DecodeString(hex.EncodeToString(prvKeyBytes)[64:])
 	signer := signature.GetEd25519Signer(privateKey, publicKey)
 
 	jws, err := jwtClaims.MarshalJWS(verifiable.EdDSA, signer, "")
@@ -87,6 +90,12 @@ func handleZktoroSignVp(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println(jws)
-	// subject := claims["sub"]
+	fmt.Println("\033[32m", "VP signed", "\033[0m")
+	_ = os.WriteFile(cfg.VpPath, []byte(jws), 0644)
 	return nil
+}
+
+func handleZktoroSignVp(cmd *cobra.Command, args []string) error {
+	return signVP()
+	// subject := claims["sub"]
 }

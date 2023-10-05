@@ -217,7 +217,9 @@ type Config struct {
 	ZktoroDir   string `yaml:"-" json:"_zktoroDir"`
 	KeyDirPath  string `yaml:"-" json:"_keyDirPath"`
 	Passphrase  string `yaml:"-" json:"_passphrase"`
-
+	DIDKeyPath  string
+	VcPath      string
+	VpPath      string
 	// yaml config values
 
 	ChainID int `yaml:"chainId" json:"chainId" default:"1" `

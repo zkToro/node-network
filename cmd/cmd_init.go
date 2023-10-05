@@ -9,9 +9,10 @@ import (
 	"strings"
 	"text/template"
 
+	"zktoro/config"
+
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/fatih/color"
-	"zktoro/config"
 	"github.com/spf13/cobra"
 )
 

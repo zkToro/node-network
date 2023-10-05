@@ -57,6 +57,12 @@ var (
 		RunE:  handleZktoroSignVp,
 	}
 
+	cmdZktoroGetPubKey = &cobra.Command{
+		Use:   "pk",
+		Short: "Get public key",
+		RunE:  handleZktoroPubKey,
+	}
+
 	cmdzktoroAuthorize = &cobra.Command{
 		Use:   "authorize",
 		Short: "generate a signature for a specific action",
@@ -74,6 +80,11 @@ var (
 		Short: "generate a pool registration signature",
 		RunE:  withInitialized(withValidConfig(handlezktoroAuthorizePool)),
 	}
+	cmdzktoroRunListener = &cobra.Command{
+		Use:   "listen",
+		Short: "Listen for VC to store and VP to retrieve",
+		RunE:  handleZktoroListen,
+	}
 )
 
 func Execute() error {
@@ -84,6 +95,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	cmdZktoro.AddCommand(cmdZktoroInit)
 	cmdZktoro.AddCommand(cmdZktoroSignVp)
+	cmdZktoro.AddCommand(cmdZktoroGetPubKey)
+	cmdZktoro.AddCommand(cmdzktoroRunListener)
 	cmdZktoro.PersistentFlags().String("passphrase", "", "passphrase to decrypt the private key (overrides $zktoro_PASSPHRASE)")
 	viper.BindPFlag(keyZktoroPassphrase, cmdZktoro.PersistentFlags().Lookup("passphrase"))
 
@@ -133,6 +146,9 @@ func initConfig() {
 	cfg.KeyDirPath = path.Join(cfg.ZktoroDir, config.DefaultKeysDirName)
 	cfg.Development = viper.GetBool(keyZktoroDevelopment)
 	cfg.Passphrase = viper.GetString(keyZktoroPassphrase)
+	cfg.DIDKeyPath = path.Join(zktoroDir, ".did")
+	cfg.VcPath = path.Join(zktoroDir, "vc.json")
+	cfg.VpPath = path.Join(zktoroDir, "vp.jwt")
 
 	viper.ReadConfig(bytes.NewBuffer(configBytes))
 	config.InitLogLevel(cfg)
