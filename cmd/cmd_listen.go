@@ -44,8 +44,8 @@ func handleZktoroListen(cmd *cobra.Command, args []string) error {
 
 		}
 	})
-	fmt.Println("listen on 8081")
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	fmt.Println("listen on 80")
+	log.Fatal(http.ListenAndServe(":80", nil))
 	return nil
 
 }
